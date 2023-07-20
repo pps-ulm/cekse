@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Sertifikat Bebas Plagiasi PPs ULM</title>
+  <style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("background-image.jpg"); /* Ganti dengan nama file gambar yang sesuai */
+  background-size: cover;
+  filter: blur(5px); /* Menambahkan efek blur */
+  z-index: -1;
+}
+
+.content {
+  position: relative;
+  text-align: center;
+  padding-top: 100px;
+}
+
+#alumni-data {
+  display: inline-block;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7); /* Menambahkan latar belakang transparan */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Menambahkan shadow */
+  max-width: 60%; /* Membatasi lebar tabel hingga 60% dari lebar layar */
+}
+
+h1 {
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: #007bff; /* Warna biru */
+  padding: 10px; /* Padding untuk memberi jarak antara teks dengan tepi elemen */
+  border-radius: 10px;
+  margin: 0 auto; /* Membuat elemen h1 berada di tengah layar */
+  max-width: 61.5%; /* Membatasi lebar elemen h1 hingga 60% dari lebar layar */
+}
+
+#alumni-data p {
+  word-wrap: break-word; /* Memastikan teks dapat di-wrap secara otomatis */
+}
+
+ #qrcode-container {
+      text-align: center; /* Mengatur posisi QR code di tengah secara horizontal */
+    }
+
+    #qrcode img {
+      width: 128px; /* Mengatur lebar gambar QR code */
+      height: 128px; /* Mengatur tinggi gambar QR code */
+      display: block;
+      margin: 0 auto; /* Mengatur posisi gambar QR code di tengah container */
+    }
+	
+  </style>
+  
+</head>
+<body>
+ <div class="background-image"></div>
+  <div class="content">
+    <h1>Sertifikat Bebas Plagiasi</h1>
+    <div class="table-container">
+      
+      <div class="right-column" id="alumni-data">
+        <!-- Data will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
+
+  
+  <script>
+    $(document).ready(function() {
+      // Get the value of the 'id' parameter from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+
+      // API endpoint to retrieve data from Google Sheets based on the ID
+      const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E/values/A${id}:F${id}?key=AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI`;
+
+      // Fetch data from Google Sheets
+      $.getJSON(sheetURL, function(data) {
+        if (data.values && data.values.length > 0) {
+          const rowData = data.values[0];
+          const htmlData = `
+            <p>Nomor Sertifikat : ${rowData[1]}</p>
+            <p>Tanggal Sertifikat : ${rowData[2]}</p>
+            <p>Penandatangan : ${rowData[3]}</p>
+            <p>Nama Penerima Sertifikat : ${rowData[4]}</p>
+            <p>Judul Tesis/Disertasi : ${rowData[5]}</p>
+          <!-- Your data display... -->         
+           <div id="qrcode-container">
+              <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
+            </div>
+            <button onclick="copyQRCode()">Salin QR Code</button>
+          `;
+          $('#alumni-data').html(htmlData);
+		  
+		 // Membuat QR code menggunakan qrcode.js berdasarkan URL browser saat ini
+          const qrCode = new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href, // Menggunakan URL browser saat ini sebagai teks QR code
+            width: 128,
+            height: 128
+          });
+		  
+        } else {
+          $('#alumni-data').html('<p>Data tidak ditemukan</p>');
+        }
+      });
+    });
+	
+	function copyQRCode() {
+      const qrCodeImage = $('#qrcode img').attr('src');
+      fetch(qrCodeImage)
+        .then(response => response.blob())
+        .then(blob => {
+          const item = new ClipboardItem({ "image/png": blob });
+          navigator.clipboard.write([item]).then(function() {
+            alert('Gambar QR code berhasil disalin ke clipboard!');
+          }).catch(function(error) {
+            console.error('Tidak dapat menyalin gambar QR code: ', error);
+          });
+        })
+        .catch(error => {
+          console.error('Tidak dapat mendapatkan gambar QR code: ', error);
+        });
+    }
+  </script>
+</body>
+</html>
+
