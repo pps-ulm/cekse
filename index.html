@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Data Sertifikat Bebas Plagiasi PPs ULM</title>
+  <title>Sertifikat Bebas Plagiasi - Program Pascasarjana ULM</title>
+   <link id="favicon" rel="shortcut icon" type="image/png" href="logo.png">
+   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #f2f2f2;
-}
+    /* Additional CSS styling... */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
 
-.background-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("background-image.jpg"); /* Ganti dengan nama file gambar yang sesuai */
-  background-size: cover;
-  filter: blur(5px); /* Menambahkan efek blur */
-  z-index: -1;
-}
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("background-image.jpg"); /* Ganti dengan nama file gambar yang sesuai */
+      background-size: cover;
+      filter: blur(5px); /* Menambahkan efek blur */
+      z-index: -1;
+    }
 
-.content {
-  position: relative;
-  text-align: center;
-  padding-top: 100px;
-}
+    .content {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+     
+      width: 100%;
+    }
 
-#alumni-data {
-  display: inline-block;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.7); /* Menambahkan latar belakang transparan */
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Menambahkan shadow */
-  max-width: 60%; /* Membatasi lebar tabel hingga 60% dari lebar layar */
-}
+    #alumni-data {
+      display: inline-block;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.7); /* Menambahkan latar belakang transparan */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Menambahkan shadow */
+     
+      margin: 0 auto; /* Mengatur posisi box card menjadi tengah */
+    }
 
-h1 {
-  color: #fff;
-  font-size: 30px;
-  font-weight: bold;
-  background-color: #007bff; /* Warna biru */
-  padding: 10px; /* Padding untuk memberi jarak antara teks dengan tepi elemen */
-  border-radius: 10px;
-  margin: 0 auto; /* Membuat elemen h1 berada di tengah layar */
-  max-width: 61.5%; /* Membatasi lebar elemen h1 hingga 60% dari lebar layar */
-}
+    #alumni-data p {
+      word-wrap: break-word; /* Memastikan teks dapat di-wrap secara otomatis */
+    }
 
-#alumni-data p {
-  word-wrap: break-word; /* Memastikan teks dapat di-wrap secara otomatis */
-}
-
- #qrcode-container {
+    #qrcode-container {
       text-align: center; /* Mengatur posisi QR code di tengah secara horizontal */
     }
 
@@ -61,18 +58,58 @@ h1 {
       display: block;
       margin: 0 auto; /* Mengatur posisi gambar QR code di tengah container */
     }
-	
+
+    h1 {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 20px; /* Memberi jarak antara box card dengan judul card */
+    }
+
+    .card {
+      width: 50%; /* Mengatur lebar card hingga 55% dari lebar layar */
+      margin: 0 auto; /* Mengatur posisi card menjadi tengah */
+      margin-top: 5%; /* Memberi jarak antara box card dengan card */
+      background-color: rgba(73, 5, 5, 0.877); /* Menambahkan latar belakang transparan */
+      padding-top: 20px;
+    }
+    
+    .card-title {
+      text-align: center; /* Mengatur posisi judul card di tengah */
+      color: rgba(255, 255, 255, 0.877); /* Menambahkan latar belakang transparan */
+    }
+    .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 10%;
+}
+
   </style>
-  
 </head>
 <body>
  <div class="background-image"></div>
   <div class="content">
-    <h1>Sertifikat Bebas Plagiasi</h1>
-    <div class="table-container">
+   
+   
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><img src="logo.png" class="center" alt="Universitas Lambung Mangkurat">Sertifikat Bebas Plagiasi - Program Pascasarjana ULM</h5>
+
       
-      <div class="right-column" id="alumni-data">
-        <!-- Data will be dynamically inserted here -->
+      
+            <div id="alumni-data">
+              <!-- Data will be dynamically inserted here -->
+            </div>
+         
+
+        <div id="qrcode-container">
+          <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
+        </div>
+
+        <p></p>
+
+        <p align="center"><button onclick="copyQRCode()" class="btn btn-primary">Salin QR Code</button></p>
       </div>
     </div>
   </div>
@@ -80,31 +117,53 @@ h1 {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
 
-  
   <script>
+    // Javascript code...
+
+    
     $(document).ready(function() {
       // Get the value of the 'id' parameter from the URL
       const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get('id');
+    
+      const id = urlParams.get('id'); // ID in hex format
+   
 
       // API endpoint to retrieve data from Google Sheets based on the ID
-      const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E/values/A${id}:F${id}?key=AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI`;
+      const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E/values/A${id}:G${id}?key=AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI`;
 
       // Fetch data from Google Sheets
       $.getJSON(sheetURL, function(data) {
         if (data.values && data.values.length > 0) {
           const rowData = data.values[0];
-          const htmlData = `
-            <p>Nomor Sertifikat : ${rowData[1]}</p>
-            <p>Tanggal Sertifikat : ${rowData[2]}</p>
-            <p>Penandatangan : ${rowData[3]}</p>
-            <p>Nama Penerima Sertifikat : ${rowData[4]}</p>
-            <p>Judul Tesis/Disertasi : ${rowData[5]}</p>
+          const htmlData = `<table>
+    <tr>
+        <td>Nomor Sertifikat</td>
+        <td>: </td>
+        <td>${rowData[1]}</td>
+    </tr>
+    <tr>
+        <td>Tanggal Sertifikat</td>
+        <td>: </td>
+        <td>${rowData[2]}</td>
+    </tr>
+    
+    <tr>
+        <td>Nama Penerima Sertifikat</td>
+        <td>: </td>
+        <td>${rowData[5]}</td>
+    </tr>
+    <tr>
+        <td>Judul Tesis/Disertasi</td>
+        <td>: </td>
+        <td>${rowData[6]}</td>
+    </tr>
+</table>
+          
           <!-- Your data display... -->         
            <div id="qrcode-container">
               <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
             </div>
-            <button onclick="copyQRCode()">Salin QR Code</button>
+            
           `;
           $('#alumni-data').html(htmlData);
 		  
@@ -140,4 +199,3 @@ h1 {
   </script>
 </body>
 </html>
-
