@@ -21,6 +21,7 @@
       background-size: cover;
       background-position: center;
     }
+
     #logo {
       position: absolute;
       top: 10px;
@@ -41,14 +42,18 @@
     }
 
     #qrcode-container {
-      text-align: center; /* Mengatur posisi QR code di tengah secara horizontal */
+      text-align: center;
+      /* Mengatur posisi QR code di tengah secara horizontal */
     }
 
     #qrcode img {
-      width: 80px; /* Mengatur lebar gambar QR code */
-      height: 80px; /* Mengatur tinggi gambar QR code */
+      width: 80px;
+      /* Mengatur lebar gambar QR code */
+      height: 80px;
+      /* Mengatur tinggi gambar QR code */
       display: block;
-      margin: 0 auto; /* Mengatur posisi gambar QR code di tengah container */
+      margin: 0 auto;
+      /* Mengatur posisi gambar QR code di tengah container */
     }
 
     @media print {
@@ -79,18 +84,16 @@
         border-top: 3px solid black;
       }
 
-      body::before {
-       
-      }
+      body::before {}
     }
   </style>
 </head>
 
 <body>
 
-    <div id="sertifikat-data">
-        <!-- Data will be dynamically inserted here -->
-      </div>
+  <div id="sertifikat-data">
+    <!-- Data will be dynamically inserted here -->
+  </div>
   <!-- jQuery and Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -98,27 +101,32 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
 
-  <script>
-    // Javascript code...
+<script>
+  // Javascript code...
 
-    
-    $(document).ready(function() {
-      // Get the value of the 'id' parameter from the URL
-      const urlParams = new URLSearchParams(window.location.search);
-    
-      const id = urlParams.get('id'); // ID in hex format
-   
 
-      // API endpoint to retrieve data from Google Sheets based on the ID
-      const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E/values/A${id}:H${id}?key=AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI`;
+  $(document).ready(function () {
+    // Get the value of the 'id' parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
 
-      // Fetch data from Google Sheets
-      $.getJSON(sheetURL, function(data) {
-        if (data.values && data.values.length > 0) {
-          const rowData = data.values[0];
-          const htmlData = `  <div class="container">
+    const id = urlParams.get('id'); // ID in hex format
+    const spreadsheetId = '1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E';
+    const sheetId = 'Sheet1!A2:Z5000'; // Jika menggunakan URL JSON feed, Anda memerlukan sheet ID
+    const api_key = 'AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI'; // Jika menggunakan URL JSON feed, Anda memerlukan sheet ID
+
+    // API endpoint to retrieve data from Google Sheets based on the ID
+    const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetId}?alt=json&key=${api_key}`;
+
+    // Fetch data from Google Sheets
+    $.getJSON(sheetURL, function (data) {
+
+      const rowData = data.values.find(row => row[0] === id);
+
+      if (rowData) {
+
+        const htmlData = `  <div class="container">
     <div id="certificate-container">
       <img src="logo.png" id="logo" alt="Logo Universitas">
       <div id="header-text">
@@ -147,21 +155,22 @@
            
             
           `;
-          $('#sertifikat-data').html(htmlData);
-		  
-		 // Membuat QR code menggunakan qrcode.js berdasarkan URL browser saat ini
-          const qrCode = new QRCode(document.getElementById("qrcode"), {
-            text: "https://pps-ulm.github.io/cekse/?id=" + id, // Menggunakan URL browser saat ini sebagai teks QR code
-            width: 80,
-            height: 80
-          });
-		  
-        } else {
-          $('#alumni-data').html('<p>Data tidak ditemukan</p>');
-        }
-      });
+        $('#sertifikat-data').html(htmlData);
+
+        // Membuat QR code menggunakan qrcode.js berdasarkan URL browser saat ini
+        const qrCode = new QRCode(document.getElementById("qrcode"), {
+          text: "https://pps-ulm.github.io/cekse/?id=" + id, // Menggunakan URL browser saat ini sebagai teks QR code
+          width: 80,
+          height: 80
+        });
+
+      } else {
+        $('#sertifikat-data').html('<p>Data tidak ditemukan</p>');
+      }
     });
-	
-	
-  </script>
+  });
+
+
+</script>
+
 </html>
