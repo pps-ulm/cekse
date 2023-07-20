@@ -34,7 +34,7 @@
       width: 100%;
     }
 
-    #alumni-data {
+    #deteksi-data {
       display: inline-block;
       padding: 20px;
       background-color: rgba(255, 255, 255, 0.7); /* Menambahkan latar belakang transparan */
@@ -44,22 +44,11 @@
       margin: 0 auto; /* Mengatur posisi box card menjadi tengah */
     }
 
-    #alumni-data p {
+    #deteksi-data p {
       word-wrap: break-word; /* Memastikan teks dapat di-wrap secara otomatis */
     }
 
-    #qrcode-container {
-      text-align: center; /* Mengatur posisi QR code di tengah secara horizontal */
-    }
-
-    #qrcode img {
-      width: 128px; /* Mengatur lebar gambar QR code */
-      height: 128px; /* Mengatur tinggi gambar QR code */
-      display: block;
-      margin: 0 auto; /* Mengatur posisi gambar QR code di tengah container */
-    }
-
-    h1 {
+     h1 {
       font-size: 30px;
       font-weight: bold;
       margin-top: 20px; /* Memberi jarak antara box card dengan judul card */
@@ -98,25 +87,16 @@
 
       
       
-            <div id="alumni-data">
+            <div id="deteksi-data">
               <!-- Data will be dynamically inserted here -->
-            </div>
-         
-
-        <div id="qrcode-container">
-          <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
-        </div>
-
-        <p></p>
-
-        <p align="center"><button onclick="copyQRCode()" class="btn btn-primary">Salin QR Code</button></p>
+            </div>  
+       
       </div>
     </div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
-
+ 
   <script>
     // Javascript code...
 
@@ -129,7 +109,7 @@
    
 
       // API endpoint to retrieve data from Google Sheets based on the ID
-      const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E/values/A${id}:G${id}?key=AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI`;
+      const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/1B0XZP71THdyZwCoipwMNGGYN_PSWjMU-Bz4LQThBq_E/values/A${id}:H${id}?key=AIzaSyDG5Kb9aSRrUB9IFUJ_8Sn-WdQDR9cU-GI`;
 
       // Fetch data from Google Sheets
       $.getJSON(sheetURL, function(data) {
@@ -146,56 +126,35 @@
         <td>: </td>
         <td>${rowData[2]}</td>
     </tr>
-    
+    <tr>
+        <td>Penandatangan</td>
+        <td>: </td>
+        <td>${rowData[3]} - Direktur Program Pascasarjana ULM</td>
+    </tr>
     <tr>
         <td>Nama Penerima Sertifikat</td>
         <td>: </td>
         <td>${rowData[5]}</td>
     </tr>
     <tr>
-        <td>Judul Tesis/Disertasi</td>
+        <td>Judul ${rowData[6]}</td>
         <td>: </td>
-        <td>${rowData[6]}</td>
+        <td>${rowData[7]}</td>
     </tr>
-</table>
-          
-          <!-- Your data display... -->         
-           <div id="qrcode-container">
-              <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
-            </div>
-            
+</table>  
+       
           `;
-          $('#alumni-data').html(htmlData);
+          $('#deteksi-data').html(htmlData);
 		  
-		 // Membuat QR code menggunakan qrcode.js berdasarkan URL browser saat ini
-          const qrCode = new QRCode(document.getElementById("qrcode"), {
-            text: window.location.href, // Menggunakan URL browser saat ini sebagai teks QR code
-            width: 128,
-            height: 128
-          });
+	
 		  
         } else {
-          $('#alumni-data').html('<p>Data tidak ditemukan</p>');
+          $('#deteksi-data').html('<p>Data tidak ditemukan</p>');
         }
       });
     });
 	
-	function copyQRCode() {
-      const qrCodeImage = $('#qrcode img').attr('src');
-      fetch(qrCodeImage)
-        .then(response => response.blob())
-        .then(blob => {
-          const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard.write([item]).then(function() {
-            alert('Gambar QR code berhasil disalin ke clipboard!');
-          }).catch(function(error) {
-            console.error('Tidak dapat menyalin gambar QR code: ', error);
-          });
-        })
-        .catch(error => {
-          console.error('Tidak dapat mendapatkan gambar QR code: ', error);
-        });
-    }
+	
   </script>
 </body>
 </html>
