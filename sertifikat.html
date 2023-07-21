@@ -1,44 +1,40 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Sertifikat Plagiasi</title>
-  <!-- Bootstrap CSS -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sertifikat</title>
+  <!-- Load Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Custom CSS -->
+  <!-- Load custom CSS -->
   <style>
+    @font-face {
+      font-family: 'Cambria';
+      src: url('cambriab.ttf') format('truetype');
+      /* Add other font formats (e.g., woff, woff2) for cross-browser support */
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Cambria', serif; /* Use the defined font */
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f0f0f0;
     }
-
-    #certificate-container {
-      position: relative;
-      text-align: center;
-      margin-top: 50px;
-      background-image: url("bg.jpg");
-      background-repeat: no-repeat;
+    
+    /* Screen view - Canvas with background */
+    .canvas {
+      width: 1077px;
+      height: 820px;
+      background-image: url('bg.png');
       background-size: cover;
+      background-repeat: no-repeat;
       background-position: center;
-    }
-
-    #logo {
-      position: absolute;
-      top: 10px;
-      left: 0px;
-      width: 100px;
-    }
-
-    #header-text {
-      text-align: center;
-      margin-left: 80px;
-      display: inline-block;
-    }
-
-    hr {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      border-top: 3px solid black;
+      border: 2px solid #ccc;
     }
 
     #qrcode-container {
@@ -56,56 +52,67 @@
       /* Mengatur posisi gambar QR code di tengah container */
     }
 
+    /* Print view - Background image for A4 landscape */
     @media print {
+      html, body {
+        background-image: url('bg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+		    size: A4 landscape;
+        height:100%; 
+    margin: 0 !important; 
+    padding: 0 !important;
+    overflow: hidden;
+      }
+	  
       @page {
         size: A4 landscape;
         margin: 0;
+        padding: 0;
+        
       }
 
-      body {
-        margin: 0;
+      .canvas {
+        border: none; /* Remove border in print view */
+		    background-image: none;
       }
 
-      #certificate-container {
-        background-image: url("bg.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        background-color: white;
+      .certificate-content {
+        color: #000; /* Set text color for print view */
       }
-
-      #certificate {
-        display: none;
-      }
-
-      hr {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        border-top: 3px solid black;
-      }
-
-      body::before {}
+     
     }
+
+   
+
+    /* Add your custom styles for certificate content */
+    .certificate-content {
+      /* Add your styles here */
+      /* For example: */
+      font-size: 16px;
+      text-align: center;
+      margin-top: 180px;
+	  margin-left: 0px;
+	  word-wrap: break-word; /* Word-wrap teks yang panjang */
+    }
+    .certificate-content p {
+      margin-top: 5px; /* Atur jarak antar paragraf menjadi 10px */
+  margin-bottom: 10px; /* Atur jarak antar paragraf menjadi 10px */
+}
   </style>
 </head>
-
 <body>
 
   <div id="sertifikat-data">
     <!-- Data will be dynamically inserted here -->
   </div>
-  <!-- jQuery and Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
 
 <script>
   // Javascript code...
-
 
   $(document).ready(function () {
     // Get the value of the 'id' parameter from the URL
@@ -126,35 +133,29 @@
 
       if (rowData) {
 
-        const htmlData = `  <div class="container">
-    <div id="certificate-container">
-      <img src="logo.png" id="logo" alt="Logo Universitas">
-      <div id="header-text">
-        <h3>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI<br>
-        UNIVERSITAS LAMBUNG MANGKURAT<br>
-       PROGRAM PASCASARJANA</h3>
-      </div>
-      
-      <hr>
-      <h4>SERTIFIKAT BEBAS PLAGIASI</h4>
+        const htmlData = `<div class="canvas">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="certificate-content"><br>
+      <h4><b>SERTIFIKAT BEBAS PLAGIASI</b></h4>
       <p>NOMOR : ${rowData[1]}</p>
       <p>Sertifikat ini diberikan kepada:</p>
-      <p style="text-transform: uppercase; font-weight: bold;"><h4>${rowData[5]}</h4></p>
-      <p>Dengan Judul ${rowData[6]} :</p>
-      <p>${rowData[7]}</p>
-      <p>Telah dideteksi tingkat plagiasinya dengan kriteria toleransi &lt;= 20%, dan dinyatakan Bebas dari Plagiasi.</p>
-      <p>Banjarmasin, ${rowData[2]}</p>
-      <p>Direktur,</p>      
+      <p style="text-transform: uppercase; font-weight: bold;"><h4><b>${rowData[5]}</b></h4></p>
+      <p>Dengan Judul ${rowData[6]} :<br>
+      ${rowData[7]}</p>
+      <p>Telah dideteksi tingkat plagiasinya dengan kriteria toleransi ≤ 20%, dan <br>dinyatakan Bebas dari Plagiasi.</p>
+      <p>Banjarmasin, ${rowData[2]}<br>
+      Direktur,</p>      
       <div id="qrcode-container">
               <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
             </div>
-      <p>${rowData[3]}<br>NIP ${rowData[4]}</p>
-     
+      <p>${rowData[3]}<br>NIP ${rowData[4]}</p>     
     </div>
-  </div>                      
-           
-            
-          `;
+        </div>
+      </div>
+    </div>
+  </div>`;
         $('#sertifikat-data').html(htmlData);
 
         // Membuat QR code menggunakan qrcode.js berdasarkan URL browser saat ini
@@ -172,5 +173,5 @@
 
 
 </script>
-
+</body>
 </html>
