@@ -4,7 +4,6 @@
 <head>
   <title>Sertifikat Bebas Plagiasi - Program Pascasarjana ULM</title>
   <link id="favicon" rel="shortcut icon" type="image/png" href="logo.png">
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     /* Additional CSS styling... */
@@ -94,14 +93,10 @@
   <div class="background-image"></div>
   <div class="content">
 
-
     <!-- Card -->
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title"><img src="logo.png" class="center" alt="Universitas Lambung Mangkurat">Sertifikat Bebas
-          Plagiasi - Program Pascasarjana ULM</h5>
-
-
+        <h5 class="card-title"><img src="logo.png" class="center" alt="Universitas Lambung Mangkurat">Sertifikat Bebas Plagiasi<br>Program Pascasarjana ULM</h5>
 
         <div id="deteksi-data">
           <!-- Data will be dynamically inserted here -->
@@ -115,8 +110,6 @@
 
   <script>
     // Javascript code...
-
-
     $(document).ready(function () {
       // Get the value of the 'id' parameter from the URL
       const urlParams = new URLSearchParams(window.location.search);
@@ -136,11 +129,8 @@
 
       // Fetch data from Google Sheets
       $.getJSON(sheetURL, function (data) {
-
         const rowData = data.values.find(row => row[0] === id);
-
         if (rowData) {
-
           const htmlData = `<table>
     <tr>
         <td>Nomor Sertifikat</td>
@@ -167,20 +157,13 @@
         <td>: </td>
         <td>${rowData[7]}</td>
     </tr>
-</table>  
-       
-          `;
+</table> `;          
           $('#deteksi-data').html(htmlData);
-
-
-
         } else {
-          $('#deteksi-data').html('<p>Data tidak ditemukan</p>');
+          $('#deteksi-data').html('<center><p>Data tidak ditemukan</p></center>');
         }
       });
     });
-
-
   </script>
 </body>
 
