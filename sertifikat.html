@@ -39,6 +39,10 @@
 
     #qrcode-container {
       text-align: center;
+position: absolute;
+  right: 15%;
+  top: 85%;
+  transform: translateY(-50%);
       /* Mengatur posisi QR code di tengah secara horizontal */
     }
 
@@ -111,8 +115,22 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Library qrcode.js -->
 
+
 <script>
   // Javascript code...
+  function generatePDF() {
+    // Get the value of the 'pdf' parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pdfParam = urlParams.get('pdf');
+
+    // Check if the 'pdf' parameter is 'yes'
+    if (pdfParam === 'yes') {
+      // Create a new instance of html2pdf
+     
+     
+      
+    }
+  }
 
   $(document).ready(function () {
     // Get the value of the 'id' parameter from the URL
@@ -147,7 +165,10 @@
       <p>Telah dideteksi tingkat plagiasinya dengan kriteria toleransi ≤ 20%, dan <br>dinyatakan Bebas dari Plagiasi.</p>
       <p>Banjarmasin, ${rowData[2]}<br>
       Direktur,</p>      
-      <div id="qrcode-container">
+     <br>
+<br>
+<br>
+ <div id="qrcode-container">
               <div id="qrcode"></div> <!-- Menambahkan div untuk menampilkan QR code -->
             </div>
       <p>${rowData[3]}<br>NIP ${rowData[4]}</p>     
@@ -155,6 +176,7 @@
         </div>
       </div>
     </div>
+
   </div>`;
         $('#sertifikat-data').html(htmlData);
 
@@ -164,14 +186,29 @@
           width: 80,
           height: 80
         });
+       
+
+      
 
       } else {
         $('#sertifikat-data').html('<p>Data tidak ditemukan</p>');
       }
     });
+
+    generatePDF();
   });
 
+ 
 
+  
+</script>
+
+<script>
+  // Fungsi untuk generate PDF
+  
+  
+
+ 
 </script>
 </body>
 </html>
